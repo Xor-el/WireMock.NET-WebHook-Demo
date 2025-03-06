@@ -1,0 +1,59 @@
+{
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/transaction-online"
+        }
+      ]
+    },
+    "Methods": [
+      "POST"
+    ],
+    "Body": {
+      "Matcher": {
+        "Name": "JsonPartialMatcher",
+        "Pattern": {
+          "transactions": [
+            {
+              "sourceBankCode": "99",
+              "countryCode": "NG",
+              "sourceAccount": "1234567890",
+              "amountCurrency": "NGN"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsJson": {
+      "statusCode": null,
+      "statusMessage": null,
+      "batchReferenceNo": "{{request.bodyAsJson.batchId}}",
+      "eventID": "{{request.bodyAsJson.transferType}}"
+    },
+    "Headers": {
+      "Content-Type": "application/json"
+    },
+    "UseTransformer": true
+  },
+  "Webhook": {
+    "UseWebhooksFireAndForget": true,
+    "Request": {
+      "Url": "https://webhook.site/e5b518cc-5fd3-4db8-8e51-c7a648cc42b5",
+      "Method": "POST",
+      "Headers": {
+        "Content-Type": "application/json"
+      },
+      //"Body": "{ \"message\": \"Webhook triggered!\", \"status\": \"success\" }",
+      "BodyAsJson": {
+        "message": "Webhook triggered!",
+        "status": "success"
+      },
+      "Delay": 1000
+    }
+  }
+}
